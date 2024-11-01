@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import zipfile
 import io
-import os
 
 # Set up Streamlit layout
 st.set_page_config(page_title="Enhanced Graph Generator", layout="wide")
@@ -62,14 +60,16 @@ with tabs[1]:
             color_col = st.selectbox("Color Column (optional)", [None] + list(selected_data.columns))
 
             # Save configuration
-            graph_configurations.append({
-                "dataset_name": selected_dataset_name,
-                "graph_type": graph_type,
-                "x_axis": x_axis,
-                "y_axis": y_axis,
-                "graph_title": graph_title,
-                "color_col": color_col
-            })
+            if st.button("Save Configuration"):
+                graph_configurations.append({
+                    "dataset_name": selected_dataset_name,
+                    "graph_type": graph_type,
+                    "x_axis": x_axis,
+                    "y_axis": y_axis,
+                    "graph_title": graph_title,
+                    "color_col": color_col
+                })
+                st.success("Graph configuration saved successfully!")
 
             # Preview the graph
             if st.button("Generate Preview"):
@@ -97,8 +97,8 @@ with tabs[2]:
     with st.sidebar:
         st.subheader("Output Options")
         
-        # File format selection
-        output_format = st.selectbox("Select Output Format", ["PNG", "PDF"])
+        # File format selection, including SVG
+        output_format = st.selectbox("Select Output Format", ["PNG", "PDF", "SVG"])
         
         # Generate ZIP file option
         zip_output = st.checkbox("Download as ZIP file")
